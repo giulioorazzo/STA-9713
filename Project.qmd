@@ -2,9 +2,13 @@
 title: "STA 9713 Project"
 author: "Giulio Orazzo"
 date: last-modified
+project:
+  type: website
+  output-dir: docs
 
 format :
   html:
+    theme: superhero
     code-fold: true
     code-summary: "Show the code"
     toc: true
