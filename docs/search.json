@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "Project.html",
+    "href": "Project.html",
+    "title": "STA 9713 Project",
+    "section": "",
+    "text": "Preparation\nAnswering the Questions"
+  },
+  {
+    "objectID": "Project.html#table-of-contents",
+    "href": "Project.html#table-of-contents",
+    "title": "STA 9713 Project",
+    "section": "",
+    "text": "Preparation\nAnswering the Questions"
+  },
+  {
+    "objectID": "Project.html#question-1",
+    "href": "Project.html#question-1",
+    "title": "STA 9713 Project",
+    "section": "Question 1",
+    "text": "Question 1\nThe graph below shows a comparison between the peromance and volatility of the 4 Funds analyzed, along with the S&P 500.\n\n\n\nComparison of Returns & Volatilities\n\n\n\n\n\n\n\n\n\nFund\nMonthly Return %\nMonthly Volatility %\nAnnual Return %\nAnnual Volatility %\n\n\n\n\nS&P 500\n1.27\n4.47\n16.40\n15.49\n\n\nEndive\n1.14\n4.71\n14.61\n16.33\n\n\nWell\n1.34\n5.26\n17.30\n18.23\n\n\nWin\n1.34\n7.75\n17.25\n26.83\n\n\nPinede\n1.31\n4.74\n16.88\n16.42\n\n\n\n\n\nThe graph below show a comparison of the the monthly returns and monthly volatilities.\n\n\nShow the code\nsummary_long &lt;- pivot_longer(combined_data, \n                             cols = c(\"Monthly_Return\", \"Monthly_Volatility\"),\n                             names_to = \"Metric\",\n                             values_to = \"Value\")\nggplot(summary_long, aes(x = Fund , y = Value, fill = Metric))+\n  geom_bar(stat = \"identity\", position = \"dodge\")+\n  labs( title = \"Monthly Returns vs Monthly Volatility\")+\n  theme_bw()+\n  theme(text = element_text(family = \"Helvetica\", size = 15, face = \"bold\"))"
+  },
+  {
+    "objectID": "Project.html#question-2",
+    "href": "Project.html#question-2",
+    "title": "STA 9713 Project",
+    "section": "Question 2",
+    "text": "Question 2\nThe code below calculates the risk-return (Sharpe, Sortino)ratio for the Endive Fund\n\n\nShow the code\n# calculating the sharpe ratio with montlhy riskfree rate of 0.2%\nrf_monthly &lt;- 0.2\nendive_sharpe &lt;- (endive_mean - rf_monthly) / endive_vol\n\n#sortino ratio \nendive_downside_ret &lt;- data$Endive[data$Endive &lt; 0]\nendive_downside_dev &lt;- sd(endive_downside_ret)\nendive_sortino &lt;- (endive_mean - rf_monthly) / endive_downside_dev\n\n\nThe Sharpe Ratio for Endive is 0.2. The Sortino Ratio is 0.3"
+  },
+  {
+    "objectID": "Project.html#question-3",
+    "href": "Project.html#question-3",
+    "title": "STA 9713 Project",
+    "section": "Question 3",
+    "text": "Question 3\nThe code below calculates the 95% Confidence Interval for the true return of Endive\n\n\nShow the code\nn_endive &lt;- length(data$Endive)\n# standard error\n\nendive_SEM &lt;- (endive_vol) / sqrt(n_endive) \nalpha &lt;- 0.05\nendive_tvalue &lt;- qt(1 - alpha /2, df = n_endive -1)\nendive_lower_bound &lt;- (endive_mean) - endive_tvalue *endive_SEM\nendive_upper_bound &lt;- (endive_mean) + endive_tvalue *endive_SEM\n\n\nThe mean monthly return for Endive is 1.14% with standard deviation of 4.71%. The 95% Confidence Interval for the true mean return: 0.25% to 2.03%"
+  },
+  {
+    "objectID": "Project.html#question-4",
+    "href": "Project.html#question-4",
+    "title": "STA 9713 Project",
+    "section": "Question 4",
+    "text": "Question 4\nAssuming the returns of Well follow a normal distribution, the code below calculates the probability that the average return of 4 randomly selected months is greater than 2%.\n\n\nShow the code\n# standard error for n = 4\nwell_SEM &lt;- well_vol/sqrt(4)\n\n#standardizing the value with z-score 2%\n\nwell_zscore &lt;- (2- well_mean)/ well_SEM\nwell_prob2 &lt;- (1 - pnorm(well_zscore)) * 100\n\n\nThe probability that the average return of 4 randomly selected months is greater than 2% is 40.08% .\nThe code below calculates the z-score of the 20% percentile.\n\n\nShow the code\n#zscore of 20percentile\n\nz_20 &lt;- qnorm(.20)\nwell_20_perc &lt;- well_mean + z_20 * well_vol\n\n\nThe theoretical 20% percentile for Well is -3.09%. According to the fitted normal distribution, 20% of the time the monthly return is worse than -3.09%."
+  },
+  {
+    "objectID": "Project.html#question-5",
+    "href": "Project.html#question-5",
+    "title": "STA 9713 Project",
+    "section": "Question 5",
+    "text": "Question 5\nAssuming a 3% risk-free rate and the S&P 500 as the “market”, the code below calculates the expected returns using the CAPM equation for the 4 Funds\n\n\nShow the code\n# calculating each fund linear regression\n\nwell_model &lt;- lm(data$Well ~ data$`S&P 500 Index Fund`)\nwell_beta &lt;- as.numeric(coef(well_model)[2])\n\nendive_model &lt;- lm(data$Endive ~ data$`S&P 500 Index Fund`)\nendive_beta &lt;- as.numeric(coef(endive_model)[2])\n\nwin_model&lt;- lm(data$Win ~ data$`S&P 500 Index Fund`)\nwin_beta &lt;- as.numeric(coef(win_model)[2])\n\npinede_model&lt;- lm(data$Pinede ~ data$`S&P 500 Index Fund`)\npinede_beta &lt;- as.numeric(coef(pinede_model)[2])\n\n\n# calculating Expeced Returns using CAPM assuming A 3% rf\n\nrf &lt;- 3\nendive_exp_ret &lt;- rf + endive_beta * (annualized_sp_ret - rf)\nwell_exp_ret &lt;- rf + well_beta * (annualized_sp_ret - rf)\nwin_exp_ret &lt;- rf + win_beta * (annualized_sp_ret - rf)\npinede_exp_ret &lt;- rf + pinede_beta * (annualized_sp_ret - rf)\n \n# binding the data\nfund_names &lt;- c(\"Endive\", \"Well\", \"Win\", \"Pinede\")\nbeta &lt;- c( endive_beta, well_beta, win_beta, pinede_beta)\nexpected_ret &lt;- c(endive_exp_ret, well_exp_ret, win_exp_ret,pinede_exp_ret)\nCAPM_data &lt;- data.frame(\n  Fund = fund_names,\n  Beta = beta,\n  Expected_Return = expected_ret)\n\n\n\n\n\nComparison of Annual Expected Returns(via CAPM)\n\n\nFund\nBeta\nAnnual Expected Return %\n\n\n\n\nEndive\n0.98\n16.19\n\n\nWell\n1.11\n17.93\n\n\nWin\n1.32\n20.66\n\n\nPinede\n0.91\n15.22\n\n\n\n\n\nThe beta of the Funds represent their correlation to the market(S&P500). Using the CAPM equation, we can observe the Annual Expected Return percentage for the 4 Funds."
+  },
+  {
+    "objectID": "Project.html#question-6",
+    "href": "Project.html#question-6",
+    "title": "STA 9713 Project",
+    "section": "Question 6",
+    "text": "Question 6\nThe code below calculates the alphas(intercepts) of the 4 Funds\n\n\nShow the code\nendive_alpha &lt;- as.numeric(coef(endive_model)[1])\nwell_alpha &lt;- as.numeric(coef(well_model)[1])\nwin_alpha &lt;- as.numeric(coef(win_model)[1])\npinede_alpha &lt;- as.numeric(coef(pinede_model)[1])\n\n# adding alphas to the dataset \nalphas &lt;- c(endive_alpha, well_alpha, win_alpha, pinede_alpha)\nCAPM_data$Alpha &lt;- alphas\n\n# adding the actual returns \nCAPM_data$Actual_Return &lt;- as.numeric(c(annualized_endive_ret, annualized_well_ret,annualized_win_ret, annualized_pinede_ret))\n\n\n\n\n\nFunds’ Alphas\n\n\nFund\nAlpha\n\n\n\n\nEndive\n-0.11\n\n\nWell\n-0.08\n\n\nWin\n-0.34\n\n\nPinede\n0.07\n\n\n\n\n\nThe alphas are different than 0 for all 4 Funds."
+  },
+  {
+    "objectID": "Project.html#question-7",
+    "href": "Project.html#question-7",
+    "title": "STA 9713 Project",
+    "section": "Question 7",
+    "text": "Question 7\nThe code below plots the 4 Funds on the Security Market Line\n\n\nShow the code\nggplot()+\n  geom_line( data = CAPM_data, aes(x = Beta, y = Expected_Return),\n             color = \"blue\", linewidth = 1)+\n  geom_point(data = CAPM_data, aes(x = Beta, y = Actual_Return),\n             color = \"red\", size = 3)+\n  geom_text(data = CAPM_data, aes(x = Beta, y = Actual_Return, label = Fund),\n            vjust = -1)+\n  labs(\n    title = \"Security Market Line for 4 Funds\",\n    x = \"Beta\",\n    y = \"Returns\",\n    caption = \"Blue line = CAPM prediction | Red dots = Actual fund performance\"\n  )+\n  theme_bw()\n\n\n\n\n\n\n\n\n\nThe blue line in th graph represents the CAPM Prediction, meaning the the expected return for the Funds, taking in consideration their correlation to the market(S&P 500). The red dots represent the actual annual return.\nIt is observed that:\n\nPinede outperformed the expected annual return of 15.22% with an actual annual average return of 16.88%.\nEndive unperformed the expected annual return of 16.19% with an actual annual average return of 14.61%.\nWell unperformed the expected annual return of 17.93% with an actual annual average return of 17.3%.\nWin unperformed the expected annual return of 20.66% with an actual annual average return of 17.25%."
+  },
+  {
+    "objectID": "Project.html#question-8-well-vs-win",
+    "href": "Project.html#question-8-well-vs-win",
+    "title": "STA 9713 Project",
+    "section": "Question 8 Well vs Win",
+    "text": "Question 8 Well vs Win\nThe graphs below show the distribution of returns for Well and Win.\n\n\nShow the code\nggplot(data = data, aes(x = data$Well))+\n  geom_histogram(bins = 25, fill = \"steelblue\", alpha = 0.7, color = \"black\")+\n  theme_bw()+\n  labs( title = \"Well Distribution of Returns\",\n        x = \"Monthly Returns\",\n        y = \"%\")\n\n\n\n\n\n\n\n\n\n\n\nShow the code\nggplot(data = data, aes(x = data$Win))+\n  geom_histogram(bins = 25, fill = \"steelblue\", alpha = 0.7, color = \"black\")+\n  theme_bw()+\n  labs( title = \"Win Distribution of Returns\",\n        x = \"Monthly Returns\",\n        y = \"%\")\n\n\n\n\n\n\n\n\n\n\nComparing Mean returns of Well and Win\nThe code below calculates the t-test for Well and Win\n\n\nShow the code\n# welch test\nwelch_test &lt;- t.test(data$Well, data$Win)\n\n\n\n\n\n    Welch Two Sample t-test\n\ndata:  data$Well and data$Win\nt = 0.0038286, df = 191.94, p-value = 0.9969\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -1.757726  1.764564\nsample estimates:\nmean of x mean of y \n 1.338512  1.335094 \n\n\nThe p-value of 0.9969, fail to reject the null hypothesis H0. This indicates that the average returns for Well and Win are not statistically different."
+  },
+  {
+    "objectID": "Project.html#question-9",
+    "href": "Project.html#question-9",
+    "title": "STA 9713 Project",
+    "section": "Question 9",
+    "text": "Question 9\nThe code below calculates the number of months that have positive return for Endive and Well.\n\n\nShow the code\nn_endive&lt;- length(data$Endive)\nn_well&lt;- length(data$Well)\n\nendive_positive &lt;- length(which(data$Endive &gt; 0 )) \nwell_positive &lt;- length(which(data$Well &gt; 0 ))\n\n\nEndive has 72 positive months out of 110 total months.\nWell has 74 positive months out of 110 total months.\nWell has the better batting average.\n\n* Prepared for STA 9713 at Baruch College - Giulio Orazzo"
+  }
+]
