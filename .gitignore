@@ -20,3 +20,5 @@ data/**
 .Rdata
 .httr-oauth
 .quarto
+
+**/*.quarto_ipynb
