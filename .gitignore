@@ -17,3 +17,6 @@ data/**
 .Rhistory
 /.quarto/*
 /.quarto/
+.Rdata
+.httr-oauth
+.quarto
