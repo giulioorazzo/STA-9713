@@ -6,7 +6,7 @@ project:
   type: website
   output-dir: docs
 
-format :
+format:
   html:
     theme: superhero
     code-fold: true
@@ -21,6 +21,7 @@ execute:
   warning: false
   message: false
 editor: visual
+
 ---
 
 ## Table of Contents
