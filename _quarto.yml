@@ -6,7 +6,7 @@ website:
   title: "Data Analysis"
   description:
     Course Projects for STA 9750 at Baruch College
-  site-url: "https://giulioorazzo.github.io/Data-Analysis/"
+  site-url: "https://giulioorazzo.github.io/STA-9713/"
   navbar:
     background: primary
     search: false
