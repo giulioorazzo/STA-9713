@@ -5,7 +5,6 @@ date: last-modified
 project:
   type: website
   output-dir: docs
-
 format:
   html:
     theme: superhero
@@ -33,7 +32,7 @@ editor: visual
 The first step is to load the data-set and the necessary libraries.
 
 ```{r ,echo=FALSE }
-setwd("C:/Users/orazz/OneDrive - The City University of New York (1)/Documents/STA-9713")
+setwd("C:/Users/orazz/OneDrive - The City University of New York (1)/Documents/STA-9713/Project_files")
 
 ```
 
